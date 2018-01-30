@@ -1,0 +1,76 @@
+{
+  "success" : {
+     "Reservations": [
+          {
+              "Instances": [
+                  {
+                      "InstanceId": "i-starting_instance",
+                      "State": {
+                          "Code": 80,
+                          "Name": "stopped"
+                      },
+                      "Tags": [
+                          {
+                              "Key": "Uptime",
+                              "Value": "WEEKDAY"
+                          },
+                          {
+                              "Key": "Name",
+                              "Value": "starting_instance"
+                          }
+                      ]
+                  },
+                  {
+                      "InstanceId": "i-stopping_instance",
+                      "State": {
+                          "Code": 16,
+                          "Name": "running"
+                      },
+                      "Tags": [
+                          {
+                              "Key": "Uptime",
+                              "Value": "WEEKDAY"
+                          },
+                          {
+                              "Key": "Name",
+                              "Value": "stopping_instance"
+                          }
+                      ]
+                  }
+              ]
+          }
+      ]
+  },
+  "empty" : {
+    "Reservations": [
+      {
+          "Instances": []
+      }
+    ]
+  },
+  "fail"  : {
+    "Reservations": [
+      {
+        "Instances": [
+          {
+              "InstanceId": "failing_instance",
+              "State": {
+                  "Code": 80,
+                  "Name": "stopped"
+              },
+              "Tags": [
+                  {
+                      "Key": "Uptime",
+                      "Value": "WEEKDAY"
+                  },
+                  {
+                      "Key": "Name",
+                      "Value": "failing_instance"
+                  }
+              ]
+          }
+        ]
+      }
+    ]
+  }
+}

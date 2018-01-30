@@ -1,0 +1,13 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Handle EC2 instances.
+Resources:
+  Ec2Handler:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs6.10
+      Timeout: 10
+      Environment:
+        Variables:
+          DEFAULT_RUNNING_DAY: !Ref DEFAULT_RUNNING_DAY
