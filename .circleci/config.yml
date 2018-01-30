@@ -7,9 +7,9 @@ jobs:
       - image: localstack/localstack
     steps:
       - checkout
-      - run:
-          name: update-npm
-          command: 'sudo npm install npm -g'
+      #- run:
+      #    name: update-npm
+      #    command: 'sudo npm install npm -g'
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
