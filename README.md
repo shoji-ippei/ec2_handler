@@ -1,2 +1,5 @@
 # ec2_handler
-demo
+
+```
+echo '{}' | sam local invoke Ec2Handler -n env.json
+```
