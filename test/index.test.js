@@ -22,6 +22,12 @@ const lambda = proxyquire('../index', {
   'aws-sdk': {
     EC2: proxyEC2
 }});
+const ec2DescribeInstancesStub = sinon.stub(proxyEC2.prototype, 'describeInstances')
+.returns({promise: () => {
+  return Promise.resolve(demoAttributeResponse.success)
+}});
+const ec2StopInstancesStub = sinon.stub(proxyEC2.prototype, 'stopInstances').returns();
+const ec2StartInstancesStub = sinon.stub(proxyEC2.prototype, 'startInstances').returns();
 
 chai.use(chaiAsPromised);
 
@@ -30,8 +36,6 @@ describe('EC2 Handler', function(){
 
   beforeEach(function() {
     ctx = new MockContext();
-    const ec2StopInstancesStub = sinon.stub(proxyEC2.prototype, 'stopInstances').returns();
-    const ec2StartInstancesStub = sinon.stub(proxyEC2.prototype, 'startInstances').returns();
     console.log('bfr');
   });
 
@@ -43,8 +47,7 @@ describe('EC2 Handler', function(){
   });
 
   context('[正常系]正しいインスタンスデータを取得するとき', function() {
-
-    lambda.handler({}, ctx)
+    //lambda.handler({}, ctx)
 
     it('インスタンスの一覧取得、起動、停止が行われ、context.succeed()が返る', () => {
       /*
@@ -74,13 +77,13 @@ describe('EC2 Handler', function(){
 
       expect(ctx.succeed.calledWith('empty')).to.equal(true)
       emptyDescribeInstancesStub.restore();
-    });
     */
+    });
   });
 
   context('[正常系]異常なインスタンスデータを取得するとき', function() {
-    var spy = sinon.spy(console, 'log')
-    lambda.handler({}, ctx)
+    //var spy = sinon.spy(console, 'log')
+    //lambda.handler({}, ctx)
 
     it('succeedを返し、ログにエラー内容を書き出す', function(){
       /*
