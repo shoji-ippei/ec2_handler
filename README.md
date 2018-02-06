@@ -1,4 +1,4 @@
-#EC2 Handler
+# EC2 Handler
 ## Getting Started
 ### Docker on Mac(local)
  * [公式](https://www.docker.com/community-edition#/mac)から取得したDockerインストーラを利用してインストール
