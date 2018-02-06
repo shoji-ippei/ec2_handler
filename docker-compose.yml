@@ -1,0 +1,9 @@
+ec2:
+  build: .
+  environment:
+    NODE_ENV: development
+#  ports:
+#    - '3000:3000'
+  volumes:
+    - .:/ec2_handler
+    - /ec2_handler/node_modules
