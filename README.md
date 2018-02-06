@@ -6,7 +6,7 @@
 ### NPM install
 Node.jsをインストールすると同時にインストールされます。
 
-AWS SAM LOCAL install
+### AWS SAM LOCAL install
 ```
 $ npm install -g aws-sam-local
 ```
