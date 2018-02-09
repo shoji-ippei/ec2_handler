@@ -38,8 +38,8 @@ exports.handler = function ec2Handler(event, context) {
     // Tagのついた対象のEC2インスタンスを取得
     const all = _.flatten(_.map(data.Reservations, (reservation) => reservation.Instances));
     // 対象となるインスタンスに絞り込む
-    const stopping_instances = _.filter(all, (instance) => {return instance.State.Name === 'running' && ! defaultScheduleFilter(instance);});
-    const starting_instances = _.filter(all, (instance) => {return instance.State.Name === 'stopped' && defaultScheduleFilter(instance);});
+    const stopping_instances = _.filter(all, (instance) => {return instance.State.Name === 'running' && defaultScheduleFilter(instance);});
+    const starting_instances = _.filter(all, (instance) => {return instance.State.Name === 'stopped' && ! defaultScheduleFilter(instance);});
     //追加の絞り込みをするときはここで行い、**_instances配列に追加する
 
     // インスタンスIDのリストに変換
