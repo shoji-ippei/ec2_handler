@@ -2,6 +2,7 @@ const _ = require('lodash');
 const AWS = require('aws-sdk');
 const ec2 = new AWS.EC2();
 const moment = require('moment');
+const request = require('request');
 moment.locale('ja')
 
 function startInstances(ids){
@@ -57,6 +58,7 @@ exports.handler = function ec2Handler(event, context) {
           console.log(result);
         }
       })
+      chatworkNotify('テスト')
       context.succeed('finished');
     }).catch((err) => {
       context.fail();
@@ -86,4 +88,24 @@ function defaultScheduleFilter(instance){
   }
 
   return true;
+};
+
+function chatworkNotify(msg){
+  var room_id = '85465385';
+  var options = {
+    url: 'https://api.chatwork.com/v2/rooms/' + room_id +'/messages',
+    headers: {
+      'X-ChatWorkToken': '2893ab20b375f1461c0559c62c1c61bf'
+    },
+    form : {body : msg},
+    useQuerystring: true
+  };
+
+  request.post(options, function (err, res, body) {
+    if (!err && res.statusCode == 200) {
+      console.log('success');
+    }else{
+      console.log('error', err);
+    }
+  });
 };
