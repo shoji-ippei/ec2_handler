@@ -2,7 +2,7 @@ const _ = require('lodash');
 const AWS = require('aws-sdk');
 const ec2 = new AWS.EC2();
 const moment = require('moment');
-const request = require('request');
+const chatworkNotify = require('./chatwork.js');
 moment.locale('ja')
 
 function startInstances(ids){
@@ -16,7 +16,6 @@ function startInstances(ids){
                 else     resolve(null);
             });
   })
-
 };
 
 function stopInstances(ids){
@@ -33,7 +32,7 @@ function stopInstances(ids){
 };
 
 exports.handler = function ec2Handler(event, context) {
-  ec2.describeInstances({
+  const data = ec2.describeInstances({
       Filters: [{ Name: "tag:Uptime", Values: ["WEEKDAY"]}]
   }).promise().then((data) => {
     // Tagのついた対象のEC2インスタンスを取得
@@ -44,29 +43,28 @@ exports.handler = function ec2Handler(event, context) {
     //追加の絞り込みをするときはここで行い、**_instances配列に追加する
 
     // インスタンスIDのリストに変換
-    const stopping_ids = _.map(stopping_instances, (instance) => {return instance.InstanceId;});
+    const stopping_ids = ['dnbaiuneofm']//_.map(stopping_instances, (instance) => {return instance.InstanceId;});
     const starting_ids = _.map(starting_instances, (instance) => {return instance.InstanceId;});
 
     if (_.isEmpty(starting_ids) && _.isEmpty(stopping_ids)) {
-      context.succeed('empty');
-      return;
+      context.succeed();
     }
 
     Promise.all([startInstances(starting_ids), stopInstances(stopping_ids)]).then((results) => {
+      throw new Error()
       results.map((result)=>{
         if (result) {
-          console.log(result);
+          new chatworkNotify(result)
         }
       })
-      chatworkNotify('テスト')
-      context.succeed('finished');
+      //context.succeed('finished');
     }).catch((err) => {
-      context.fail();
+      new chatworkNotify('Error in Promise all')
+      //context.fail(err);
     });
-
-  }).catch((err) => {
-    console.log('Error in Lambda function,', err);
-    context.fail(err)
+}).catch((err) => {
+    new chatworkNotify('Error in Lambda function')
+    //context.fail(err)
   });
 };
 
@@ -88,24 +86,4 @@ function defaultScheduleFilter(instance){
   }
 
   return true;
-};
-
-function chatworkNotify(msg){
-  var room_id = '85465385';
-  var options = {
-    url: 'https://api.chatwork.com/v2/rooms/' + room_id +'/messages',
-    headers: {
-      'X-ChatWorkToken': '2893ab20b375f1461c0559c62c1c61bf'
-    },
-    form : {body : msg},
-    useQuerystring: true
-  };
-
-  request.post(options, function (err, res, body) {
-    if (!err && res.statusCode == 200) {
-      console.log('success');
-    }else{
-      console.log('error', err);
-    }
-  });
 };

@@ -11,3 +11,5 @@ Resources:
       Environment:
         Variables:
           DEFAULT_RUNNING_DAY: !Ref DEFAULT_RUNNING_DAY
+          CHATWORK_TOKEN: !Ref CHATWORK_TOKEN
+          CHATWORK_ROOM_ID: !Ref CHATWORK_ROOM_ID
