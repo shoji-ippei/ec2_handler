@@ -43,7 +43,7 @@ exports.handler = function ec2Handler(event, context) {
     //追加の絞り込みをするときはここで行い、**_instances配列に追加する
 
     // インスタンスIDのリストに変換
-    const stopping_ids = ['dnbaiuneofm']//_.map(stopping_instances, (instance) => {return instance.InstanceId;});
+    const stopping_ids = _.map(stopping_instances, (instance) => {return instance.InstanceId;});
     const starting_ids = _.map(starting_instances, (instance) => {return instance.InstanceId;});
 
     if (_.isEmpty(starting_ids) && _.isEmpty(stopping_ids)) {
@@ -51,7 +51,6 @@ exports.handler = function ec2Handler(event, context) {
     }
 
     Promise.all([startInstances(starting_ids), stopInstances(stopping_ids)]).then((results) => {
-      throw new Error()
       results.map((result)=>{
         if (result) {
           new chatworkNotify(result)
